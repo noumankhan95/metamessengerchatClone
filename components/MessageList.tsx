@@ -1,13 +1,42 @@
+"use client";
 import SingleMessage from "./SingleMessage";
-
-async function MessageList() {
+import { useState, useEffect } from "react";
+import { SocketInit } from "@/lib/socketInit";
+function MessageList() {
   //   let messages = await getMessages();
-  let messages = [
-    { user: "me", message: "Hello" },
-    { user: "Ali", message: "Hello to You" },
-  ];
+  let [messages, setmessages] = useState([
+    {
+      user: "me",
+      message:
+        "Hello. Fullstackmeta-messenger-appmetamessengerchatClone>.Clone>",
+    },
+    {
+      user: "me",
+      message:
+        "Hello. Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
+    },
+    {
+      user: "Ali",
+      message:
+        "Hello to You .Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
+    },
+    {
+      user: "Ali",
+      message:
+        "Hello Again to You .Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
+    },
+  ]);
+  useEffect(() => {
+    let socket = SocketInit();
+    socket.on("new Message", (message) => {
+      setmessages((p) => [...p, message]);
+    });
+    return () => {
+      socket.off("new Message");
+    };
+  }, []);
   return (
-    <div className="p-2 overflow-hidden">
+    <div className="overflow-hidden">
       {messages.map((m) => (
         <div className="space-y-2" key={m.message.toString()}>
           <SingleMessage {...m} />

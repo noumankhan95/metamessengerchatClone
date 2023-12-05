@@ -1,9 +1,18 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import Signout from "./signout";
+import { useEffect } from "react";
+import Socketval, { SocketInit } from "@/lib/socketInit";
 function Header() {
   const session = true;
+  useEffect(() => {
+    if (!Socketval) {
+      let sokcet = SocketInit();
+      console.log("Head", sokcet.id);
+    }
+  });
   if (session)
     return (
       <header className="flex flex-col w-full justify-between items-center space-y-4 sticky bg-white p-5 shadow-md top-0 z-50">

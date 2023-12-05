@@ -9,7 +9,8 @@ const nextConfig = {
             hostname: 'static.vecteezy.com',
             protocol: "https"
         }]
-    }
+    },
+    
 }
 
 module.exports = nextConfig

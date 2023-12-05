@@ -18,15 +18,22 @@ function SingleMessage({ user, message }: messageProps) {
         alt="user"
         className="h-12 w-20 object-contain"
       />
-      <div>
+      <div className="max-w-[55%] md:max-w-2xl px-1">
         <h1 className="text-black">{user}</h1>
         <p
-          className={`p-2 rounded-lg ${
+          className={`p-2 w-full rounded-lg break-words ${
             user === "me" ? "flex-row-reverse bg-blue-500" : "bg-red-400"
           }`}
         >
           {message}
         </p>
+        <h2 className="text-blue-700 text-sm">
+          {new Intl.DateTimeFormat("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }).format(Date.now())}
+        </h2>
       </div>
     </div>
   );

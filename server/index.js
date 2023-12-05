@@ -15,38 +15,60 @@ const io = new socket.Server(server, {
   },
 });
 
+// io.on("connection", async (socket) => {
+//   try {
+//     console.log(`Connection established`, socket.id);
+
+//     socket.on("disconnect", () => {
+//       console.log("user disconnected", socket.id);
+//     });
+//     socket.on('setUserid', async (data, cb) => {
+//       try {
+
+//         const result = await SocketModel.findOneAndUpdate({ email: data.userId }, { $set: { socketId: data.socketId, email: data.userId } }, { upsert: true, new: true })
+//         console.log(result)
+//         cb("Success DOne")
+//         return
+//       } catch (e) {
+//         console.log(e)
+//       }
+//     })
+//     socket.on("chat-message", async (data) => {
+//       console.log(data, "data from chat ")
+//       const User = await SocketModel.findOne({ email: data.recepId })
+//       console.log(User, "data from User ")
+
+//       const recipientSocket = io.sockets.sockets[User.socketId]
+
+//       // Send the private message directly to the recipient
+//       const cid = sortIds(data.userId, data.recepId)
+//       // const result = await MessageModel.updateOne({ conversationId: cid }, { $push: { messages: { message: data.message } } }, { upsert: true, new: true })
+//       io.to(User.socketId).emit("chat-message", data.message);
+
+//     });
+
+//   } catch (e) {
+//     console.log(e)
+//   }
+
+// });
 io.on("connection", async (socket) => {
   try {
     console.log(`Connection established`, socket.id);
-
     socket.on("disconnect", () => {
       console.log("user disconnected", socket.id);
     });
-    socket.on('setUserid', async (data, cb) => {
+    socket.on("new Message", async (data, ack) => {
       try {
-
-        const result = await SocketModel.findOneAndUpdate({ email: data.userId }, { $set: { socketId: data.socketId, email: data.userId } }, { upsert: true, new: true })
-        console.log(result)
-        cb("Success DOne")
-        return
+        console.log("New Message Received", data)
+        ack("done")
+        
       } catch (e) {
-        console.log(e)
+        ack("error")
       }
+
+
     })
-    socket.on("chat-message", async (data) => {
-      console.log(data, "data from chat ")
-      const User = await SocketModel.findOne({ email: data.recepId })
-      console.log(User, "data from User ")
-
-      const recipientSocket = io.sockets.sockets[User.socketId]
-
-      // Send the private message directly to the recipient
-      const cid = sortIds(data.userId, data.recepId)
-      // const result = await MessageModel.updateOne({ conversationId: cid }, { $push: { messages: { message: data.message } } }, { upsert: true, new: true })
-      io.to(User.socketId).emit("chat-message", data.message);
-
-    });
-
   } catch (e) {
     console.log(e)
   }
