@@ -6,6 +6,6 @@ const Conversations = new mongoose.Schema({
 }, { timestamps: true });
 
 const ConversationsModel =
-    mongoose.models.Conversations || mongoose.model("Conversations", Conversatiobs);
+    mongoose.models.Conversations || mongoose.model("Conversations", Conversations);
 
 module.exports = ConversationsModel;

@@ -1,14 +1,17 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 type messageProps = {
-  user: String;
+  _id: String;
   message: String;
 };
-function SingleMessage({ user, message }: messageProps) {
+function SingleMessage({ _id, message }: messageProps) {
+  const { data: session } = useSession();
   return (
     <div
       className={`flex items-center text-white ${
-        user === "me" ? "flex-row-reverse" : ""
+        _id === session?.user._id.toString() ? "flex-row-reverse" : ""
       }`}
     >
       <Image
@@ -19,10 +22,12 @@ function SingleMessage({ user, message }: messageProps) {
         className="h-12 w-20 object-contain"
       />
       <div className="max-w-[55%] md:max-w-2xl px-1">
-        <h1 className="text-black">{user}</h1>
+        <h1 className="text-black">{session?.user.name}</h1>
         <p
           className={`p-2 w-full rounded-lg break-words ${
-            user === "me" ? "flex-row-reverse bg-blue-500" : "bg-red-400"
+            _id === session?.user._id.toString()
+              ? "flex-row-reverse bg-blue-500"
+              : "bg-red-400"
           }`}
         >
           {message}

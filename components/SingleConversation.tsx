@@ -1,11 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-function SingleConversation(c: any) {
-  const router = useRouter();
+import { useContext } from "react";
+import { MyContext } from "@/Providers/ContextApi";
+type pageProps = {
+  user: User;
+};
+function SingleConversation({ user }: pageProps) {
+  const ctx = useContext(MyContext);
 
   return (
-    <div className="flex justify-start items-center border-b-2 p-2">
+    <div
+      className="flex justify-start items-center border-b-2 p-2 cursor-pointer"
+      onClick={() => {
+        ctx.setRecepient(user._id);
+      }}
+    >
       <Image
         src={`https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png`}
         height={100}
@@ -16,7 +26,7 @@ function SingleConversation(c: any) {
       <div className="flex justify-between  items-center w-full px-3">
         <div>
           <h1 className="text-black text-2xl font-serif font-bold">{"user"}</h1>
-          <p>{c.message}</p>
+          {/* <p>{c.message}</p> */}
         </div>
 
         <h2 className="text-blue-700 text-sm font-bold">

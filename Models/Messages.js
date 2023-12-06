@@ -6,6 +6,6 @@ const Message = new mongoose.Schema({
 }, { timestamps: true });
 
 const MessageModel =
-    mongoose.models.Sockets || mongoose.model("Sockets", Message);
+    mongoose.models.Message || mongoose.model("Sockets", Message);
 
 module.exports = MessageModel;

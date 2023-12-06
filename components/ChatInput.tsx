@@ -1,9 +1,18 @@
 "use client";
 import React from "react";
 import { SocketInit } from "@/lib/socketInit";
-
+import { MyContext } from "@/Providers/ContextApi";
 function ChatInput() {
   const [message, setmessage] = React.useState("");
+  const ctx = React.useContext(MyContext);
+  const [RecepsSocket, setRecepSocket] = React.useState<string>("");
+
+  // React.useEffect(() => {
+  //   ctx
+  //     .getrecepientSocket()
+  //     .then((socket) => setRecepSocket(socket))
+  //     .catch((e) => console.log(e));
+  // }, []);
   const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     console.log(message, "message log");
     if (!message) return;
@@ -12,9 +21,13 @@ function ChatInput() {
     const socket = SocketInit();
     console.log("input socket", socket.id);
     if (!socket) return console.log("No Socket Connection");
-    socket.emit("new Message", { message }, (text: string) => {
-      console.log(text);
-    });
+    socket.emit(
+      "new Message",
+      { message, recept: RecepsSocket },
+      (text: string) => {
+        console.log(text);
+      }
+    );
   };
   return (
     <div className="flex w-full md:px-0 bg-white justify-center space-x-1 px-1 sticky bottom-0 py-5 z-50">

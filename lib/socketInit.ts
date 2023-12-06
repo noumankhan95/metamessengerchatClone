@@ -6,7 +6,7 @@ export const SocketInit = () => {
   if (Socketval) {
     return Socketval;
   } else {
-    Socketval = io("http://localhost:4000");
+    Socketval = io("http://localhost:4001");
     return Socketval;
   }
 };

@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
+import { signOut } from "next-auth/react";
 
 function Signout() {
   return (
     <button
-      onClick={() => {
-        console.log("hello");
+      onClick={async () => {
+        await signOut();
       }}
       className="p-2 text-blue-500"
     >

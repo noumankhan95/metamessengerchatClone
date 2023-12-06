@@ -75,8 +75,8 @@ io.on("connection", async (socket) => {
 
 });
 mongoose.connect("mongodb://127.0.0.1:27017/messengerApp").then(r => {
-  server.listen(4000, async () => {
-    console.log("Server running on http://localhost:4000");
+  server.listen(4001, async () => {
+    console.log("Server running on http://localhost:4001");
   });
 
 }).catch(e => console.log(e))

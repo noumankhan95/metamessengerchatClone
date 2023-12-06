@@ -1,17 +1,31 @@
 type User = {
-  name: string;
   _id: string;
-  socketId: string;
+  name: string;
   password: string;
   email: string;
 };
 
-type Message = {
-  messages: string;
+type Messages = {
+  messages: Message[];
 };
 
-type message = {
+type Message = {
   _id: string;
-  conversationId: string;
-  messages: Array<Message>;
+  message: string;
+};
+
+type UsersRespose = {
+  status: Number;
+  data: { docs: User[] };
+};
+
+type MessagesResponse = {
+  status: Number;
+  data: { docs: Message[] };
+};
+
+type RecepsSocket = {
+  userId: string;
+  email?: string;
+  socketId: string;
 };

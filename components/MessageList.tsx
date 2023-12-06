@@ -1,43 +1,41 @@
 "use client";
 import SingleMessage from "./SingleMessage";
-import { useState, useEffect } from "react";
-import { SocketInit } from "@/lib/socketInit";
+import { useState, useEffect, useContext } from "react";
+import { useSession } from "next-auth/react";
+import { MyContext } from "@/Providers/ContextApi";
+import MessageFetcher from "@/lib/messageFetcher";
+import useSWR from "swr";
+import SortIds from "@/lib/sortIds";
+// import socketModel from "@/Models/Sockets";
 function MessageList() {
   //   let messages = await getMessages();
-  let [messages, setmessages] = useState([
-    {
-      user: "me",
-      message:
-        "Hello. Fullstackmeta-messenger-appmetamessengerchatClone>.Clone>",
-    },
-    {
-      user: "me",
-      message:
-        "Hello. Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
-    },
-    {
-      user: "Ali",
-      message:
-        "Hello to You .Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
-    },
-    {
-      user: "Ali",
-      message:
-        "Hello Again to You .Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>.Fullstackmeta-messenger-appmetamessengerchatClone>",
-    },
-  ]);
-  useEffect(() => {
-    let socket = SocketInit();
-    socket.on("new Message", (message) => {
-      setmessages((p) => [...p, message]);
-    });
-    return () => {
-      socket.off("new Message");
-    };
-  }, []);
+  const ctx = useContext(MyContext);
+  const { data: session } = useSession();
+  // useEffect(() => {
+  //   const GetrecepSocket = async () => {
+  //     try {
+  //       const recep: RecepsSocket = await socketModel.findOnebyId({
+  //         _id: ctx.recepientId,
+  //       });
+  //       return recep.userId as string;
+  //     } catch (e) {
+  //       return "Error";
+  //     }
+  //   };
+  //   GetrecepSocket();
+  // }, []);
+  const convId = SortIds(ctx.recepientId, session?.user._id);
+  const {
+    data: messages,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR("/api/Conversations", MessageFetcher.bind(null, convId));
+  console.log(session);
+  if (isLoading) return <div>Loading Messages</div>;
   return (
     <div className="overflow-hidden">
-      {messages.map((m) => (
+      {messages?.map((m) => (
         <div className="space-y-2" key={m.message.toString()}>
           <SingleMessage {...m} />
         </div>
@@ -46,14 +44,4 @@ function MessageList() {
   );
 }
 
-async function getMessages() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getMessages`);
-    if (!res.ok) throw "Couldnt Fetch Messages";
-    const { data } = await res.json();
-    return data.docs;
-  } catch (e) {
-    console.log("Error");
-  }
-}
 export default MessageList;

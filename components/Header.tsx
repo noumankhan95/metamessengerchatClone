@@ -5,15 +5,16 @@ import Link from "next/link";
 import Signout from "./signout";
 import { useEffect } from "react";
 import Socketval, { SocketInit } from "@/lib/socketInit";
+import { useSession } from "next-auth/react";
 function Header() {
-  const session = true;
+  const session = useSession();
   useEffect(() => {
     if (!Socketval) {
       let sokcet = SocketInit();
       console.log("Head", sokcet.id);
     }
   });
-  if (session)
+  if (session.status === "authenticated")
     return (
       <header className="flex flex-col w-full justify-between items-center space-y-4 sticky bg-white p-5 shadow-md top-0 z-50">
         <div className="flex w-full justify-between items-center">

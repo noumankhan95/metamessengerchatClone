@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/sortIds.js", "Models/Sockets.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/sortIds.js", "Models/Sockets.js", "Models/Conversations.js"],
   "exclude": ["node_modules"]
 }
