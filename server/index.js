@@ -61,13 +61,17 @@ io.on("connection", async (socket) => {
     socket.on("new Message", async (data, ack) => {
       try {
         console.log("New Message Received", data)
+        const recepSocketResult = await SocketModel.findOne({ userId: data.recepientSocket })
+        const Messageres = await MessageModel.findOneAndUpdate({ conversationId: data.convId }, { $push: { messages: { message: data.message, sender: data.sender } } }, { upsert: true, new: true })
+        console.log("rec", recepSocketResult)
+        // console.log('mess', Messageres)
         ack("done")
-        
+        console.log(recepSocketResult.socketId, 'receps socket')
+        io.to(recepSocketResult.socketId).emit("new Message", { message: data.message, sender: data.sender, _id: Messageres.messages[Messageres.messages.length - 1] })
       } catch (e) {
+        console.log(e)
         ack("error")
       }
-
-
     })
   } catch (e) {
     console.log(e)

@@ -5,7 +5,7 @@ import MessageModel from "@/Models/Messages";
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    const r: message[] = await MessageModel.find({ conversationId: "asd" });
+    const r: Message[] = await MessageModel.find({ conversationId: "asd" });
     return NextResponse.json({
       status: 1,
       data: { docs: r },

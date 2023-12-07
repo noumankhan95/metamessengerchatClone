@@ -6,12 +6,17 @@ type User = {
 };
 
 type Messages = {
+  _id: string;
+  createdAt: string;
+  updateAt: string;
+  conversationId: string;
   messages: Message[];
 };
 
 type Message = {
   _id: string;
   message: string;
+  sender: string;
 };
 
 type UsersRespose = {
@@ -21,7 +26,7 @@ type UsersRespose = {
 
 type MessagesResponse = {
   status: Number;
-  data: { docs: Message[] };
+  data: { docs: Messages };
 };
 
 type RecepsSocket = {

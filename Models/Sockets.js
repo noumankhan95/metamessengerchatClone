@@ -7,6 +7,6 @@ const SocketSchema = new mongoose.Schema({
 });
 
 const socketModel =
-  mongoose.models.Socket || mongoose.model("Socket", SocketSchema);
+  mongoose.models?.Socket || mongoose.model("Socket", SocketSchema);
 
 module.exports = socketModel;

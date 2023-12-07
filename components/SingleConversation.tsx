@@ -25,7 +25,9 @@ function SingleConversation({ user }: pageProps) {
       />
       <div className="flex justify-between  items-center w-full px-3">
         <div>
-          <h1 className="text-black text-2xl font-serif font-bold">{"user"}</h1>
+          <h1 className="text-black text-md font-serif font-bold lowercase">
+            {user.name}
+          </h1>
           {/* <p>{c.message}</p> */}
         </div>
 

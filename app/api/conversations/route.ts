@@ -1,17 +1,16 @@
 import ConversationModel from "@/Models/Conversations";
+import MessageModel from "@/Models/Messages";
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-type userConparam = {
-  params: {
-    userId: string;
-  };
-};
+
 export async function GET(req: NextRequest) {
   try {
     const nurl = req.nextUrl.searchParams;
     const userId = nurl.get("id");
+    console.log(userId,'userid');
     await dbConnect();
-    const r: User[] = await ConversationModel.find({ userId });
+    const r: Message[] = await MessageModel.findOne({ conversationId: userId });
+    console.log("r", r);
     return NextResponse.json({
       status: 1,
       data: { docs: r },

@@ -5,13 +5,14 @@ import { useSession } from "next-auth/react";
 type messageProps = {
   _id: String;
   message: String;
+  sender: String;
 };
-function SingleMessage({ _id, message }: messageProps) {
+function SingleMessage({ _id, message, sender }: messageProps) {
   const { data: session } = useSession();
   return (
     <div
       className={`flex items-center text-white ${
-        _id === session?.user._id.toString() ? "flex-row-reverse" : ""
+        sender === session?.user._id.toString() ? "flex-row-reverse" : ""
       }`}
     >
       <Image
@@ -25,7 +26,7 @@ function SingleMessage({ _id, message }: messageProps) {
         <h1 className="text-black">{session?.user.name}</h1>
         <p
           className={`p-2 w-full rounded-lg break-words ${
-            _id === session?.user._id.toString()
+            sender === session?.user._id.toString()
               ? "flex-row-reverse bg-blue-500"
               : "bg-red-400"
           }`}

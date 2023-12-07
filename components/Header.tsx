@@ -1,19 +1,38 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Signout from "./signout";
 import { useEffect } from "react";
-import Socketval, { SocketInit } from "@/lib/socketInit";
+import { getSocketInstance } from "@/lib/socketInit";
 import { useSession } from "next-auth/react";
+import { MyContext } from "@/Providers/ContextApi";
 function Header() {
   const session = useSession();
+  const [userSocket, setuserSocket] = useState<string>("");
+  const [SocketStatus, setSocketStatus] = useState<boolean>(false);
   useEffect(() => {
-    if (!Socketval) {
-      let sokcet = SocketInit();
-      console.log("Head", sokcet.id);
+    getSocketInstance().then((socket) => {
+      console.log("socket id is ", socket!.id);
+      setSocketStatus(true);
+      setuserSocket(socket!.id);
+    });
+  }, []);
+  useEffect(() => {
+    if (userSocket && session.data?.user?._id) {
+      console.log("scoket herte");
+      fetch(
+        `${process.env.NEXT_PUBLIC_URL}/api/socket?id=${session.data.user._id}&socket=${userSocket}`,
+        {
+          method: "GET",
+          cache: "no-cache",
+        }
+      )
+        .then((r) => r.json())
+        .then((r) => console.log(r, "user socket setting"))
+        .catch((e) => console.log("socket set error"));
     }
-  });
+  }, [userSocket]);
   if (session.status === "authenticated")
     return (
       <header className="flex flex-col w-full justify-between items-center space-y-4 sticky bg-white p-5 shadow-md top-0 z-50">
